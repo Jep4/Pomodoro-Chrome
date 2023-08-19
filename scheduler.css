@@ -1,0 +1,92 @@
+﻿* {
+}
+
+header{
+    padding-bottom:20px;
+}
+
+button {
+    text-align: center;
+    border: solid;
+    border-width: 2px;
+    border-radius: 7px;
+    border-color: aliceblue;
+    background: black;
+    color:aliceblue;
+    font-weight:bold;
+    padding:5px;
+}
+
+input{
+    width:100px;
+}
+
+#box {
+    background: rgb(4,0,69);
+    background: linear-gradient(0deg, rgba(4,0,55,1) 0%, rgba(0,0,0,1) 30%, rgba(0,3,3,6) 100%);
+    border-radius: 29px;
+    height: 400px;
+    width: 600px;
+}
+
+#bar{
+    margin-left:20px;
+    width:550px;
+    height:50px;
+    background-color:aliceblue;
+    border-radius:20px;
+}
+
+.time{
+    margin-left:160px;
+    margin-top:12px;
+}
+
+#time-setting{
+    color:aliceblue;
+}
+.option{
+    margin-top:40px;
+    margin-left:40px;
+}
+
+.okay{
+    margin-top:10px;
+    margin-left:120px;
+    background-color: aliceblue;
+    color:black;
+    height:40px;
+    width:100px;
+    font-size:22px;
+    border:none;
+}
+
+#total {
+    margin-right: 20px;
+    text-align: right;
+    color: aliceblue;
+    margin-bottom: 60px;
+}
+
+.session {
+    float: left;
+    width: 30px;
+    height: 48px;
+    border-radius: 5px;
+    border:dotted;
+    border-width:1px;
+    font-size:20px;
+    text-align:center;
+    font-weight:bolder;
+    color:aliceblue;
+}
+
+.focus {
+    background-color: #2E5266FF;
+}
+.break {
+    background-color: #6E8898FF;
+}
+.long-break {
+    background-color: #9FB1BCFF;
+}

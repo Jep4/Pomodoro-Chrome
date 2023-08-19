@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+    <link rel="stylesheet" href="scheduler.css">
+    <meta charset="utf-8" />
+    <title></title>
+
+</head>
+<body>
+    <div id="box">
+
+        <header></header>
+        <div id="bar">
+            <div class="session focus">F</div>
+            <div class="session break">B</div>
+            <div class="session focus">F</div>
+            <div class="session break">B</div>
+            <div class="session long-break">LB</div>
+        </div>
+        <div id="total">
+            8 hours 00 minutes
+        </div>
+        <div id="time-setting">
+            <div id="focus" class="time">
+                <button>
+                    FOCUS TIME
+                </button>
+                <input value=25 />
+
+                mins
+            </div>
+
+            <div id="break" class="time">
+                <button>
+                    BREAK TIME
+                </button>
+                <input value=5>
+                mins
+            </div>
+            <div id="long-break" class="time">
+                <button>
+                    LONG BREAK
+                </button>
+                <input id="long-input" value=20>
+                mins
+
+            </div>
+        </div>
+        <div id="options">
+            <button id="import" class="option">Import settings</button>
+            <button id="export" class="option">Export settings</button>
+            <button id="BL" class="option">Black list</button>
+            <button id="WL" class="option">White list</button>
+        </div>
+        <div id="buttons">
+            <button id="apply" class="okay">
+                apply
+            </button>
+            <button id="cancel" class="okay">
+                cancel
+            </button>
+        </div>
+    </div>
+</body>
+</html>
