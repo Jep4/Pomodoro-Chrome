@@ -9,7 +9,8 @@
   "permissions": [ "storage", "Notifications"],
 
   "action": {
-    "default_popup": "index.html"
+    "default_popup": "src/index.html",
+    "defult_icon":  ["src/time-16.png"]
   },
 
   "content_scripts": [
@@ -19,8 +20,8 @@
         "index.html", 
         "scheduler.html"
       ],
-      "js": [ "index.js", "scheduler.js" ],
-      "css":  ["index.css"]
+      "js": [ "src/index.js", "src/scheduler.js" ],
+      "css": [ "src/index.css" ]
     }
   ]
 }
