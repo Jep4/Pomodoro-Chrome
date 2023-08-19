@@ -8,39 +8,45 @@
     <title></title>
 
 </head>
-<body>
-    <div id="box">
-
+<body id="box">
         <header></header>
         <div id="bar">
             <div class="session focus">F</div>
             <div class="session break">B</div>
             <div class="session focus">F</div>
             <div class="session break">B</div>
+            <div class="session focus">F</div>
             <div class="session long-break">LB</div>
         </div>
-        <div id="total">
-            8 hours 00 minutes
+
+        <div id="totalbox">
+            <button id="delete">Delete</button>
+            <p id="total">
+                8 hours 00 minutes
+            </p>
+            <p id="totalStudy">
+                working 7 hours 00 minutes
+            </p>
         </div>
         <div id="time-setting">
-            <div id="focus" class="time">
-                <button>
+            <div class="time">
+                <button  id="focus">
                     FOCUS TIME
                 </button>
-                <input value=25 />
+                <input id="focus-input" value=25 />
 
                 mins
             </div>
 
-            <div id="break" class="time">
-                <button>
+            <div class="time">
+                <button id="break" >
                     BREAK TIME
                 </button>
-                <input value=5>
+                <input id="break-input"  value=5>
                 mins
             </div>
-            <div id="long-break" class="time">
-                <button>
+            <div  class="time">
+                <button id="long-break">
                     LONG BREAK
                 </button>
                 <input id="long-input" value=20>
@@ -55,13 +61,13 @@
             <button id="WL" class="option">White list</button>
         </div>
         <div id="buttons">
-            <button id="apply" class="okay">
-                apply
+            <button id="start" class="okay">
+                start
             </button>
             <button id="cancel" class="okay">
                 cancel
             </button>
         </div>
-    </div>
+    <script src="scheduler.js"></script>
 </body>
 </html>

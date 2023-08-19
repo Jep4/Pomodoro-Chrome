@@ -6,15 +6,16 @@ header{
 }
 
 button {
+    cursor: pointer;
     text-align: center;
     border: solid;
     border-width: 2px;
     border-radius: 7px;
     border-color: aliceblue;
     background: black;
-    color:aliceblue;
-    font-weight:bold;
-    padding:5px;
+    color: aliceblue;
+    font-weight: bold;
+    padding: 5px;
 }
 
 input{
@@ -24,7 +25,6 @@ input{
 #box {
     background: rgb(4,0,69);
     background: linear-gradient(0deg, rgba(4,0,55,1) 0%, rgba(0,0,0,1) 30%, rgba(0,3,3,6) 100%);
-    border-radius: 29px;
     height: 400px;
     width: 600px;
 }
@@ -61,11 +61,11 @@ input{
     border:none;
 }
 
-#total {
+#totalbox {
     margin-right: 20px;
     text-align: right;
     color: aliceblue;
-    margin-bottom: 60px;
+    margin-bottom: 20px;
 }
 
 .session {
@@ -89,4 +89,11 @@ input{
 }
 .long-break {
     background-color: #9FB1BCFF;
+}
+#total{
+    height:10px;
+}
+#totalstudy {
+    height:10px;
+    float: right;
 }

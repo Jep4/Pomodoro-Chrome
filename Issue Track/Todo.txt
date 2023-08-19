@@ -1,0 +1,14 @@
+2023-08-19 Issue
+- (scheduler.js) Chrome.sync.storage data disapears when changes to index.html 
+
+2023-08-19 Todo
+- (index.js) get data from storage and save it to CountDown
+- (index.js) change state according to the block type (data.type)
+- (index.js) move notification code to background.js
+- (index.js) add particles when countdown gets 0
+- (index.js) add restart button
+
+- (scheduler.js) add setting import & export
+- (scheduler.js) add blacklist & whitelist 
+
+- Add main icon

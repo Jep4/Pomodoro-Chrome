@@ -1,10 +1,26 @@
 {
   "name": "Custom Pomodoro",
   "description": "Pomodoro timer that can adjust the session time and repetition",
-  "version": "1.0",
+  "version": "0.1",
   "manifest_version": 3,
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": [ "storage" ]
+  "permissions": [ "storage", "Notifications"],
+
+  "action": {
+    "default_popup": "index.html"
+  },
+
+  "content_scripts": [
+    {
+      "matches": [ "<all_urls>" ],
+      "html": [
+        "index.html", 
+        "scheduler.html"
+      ],
+      "js": [ "index.js", "scheduler.js" ],
+      "css":  ["index.css"]
+    }
+  ]
 }
