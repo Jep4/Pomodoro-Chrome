@@ -1,0 +1,72 @@
+﻿
+/* TITLE */
+h1 {
+    padding-top: 15px;
+    text-align: center;
+    color: aliceblue;
+    font-size: 40px;
+}
+
+/* Break time */
+h2 {
+    text-align: center;
+    color: #bbbbbb;
+    font-size: 28px;
+}
+
+button {
+    background-color: aliceblue; /* Green */
+    border: none;
+    color: #242526;
+    width: 100px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 15px;
+    font-size: 34px;
+    font-weight: bold;
+}
+
+#play {
+    margin-left: 180px;
+    margin-right: 20px;
+}
+#skip {
+    margin-right: 100px;
+}
+
+#box {
+    background: rgb(4,0,69);
+    background: linear-gradient(0deg, rgba(4,0,55,1) 0%, rgba(0,0,0,1) 30%, rgba(0,3,3,6) 100%);
+    border-radius: 29px;
+    font-family: Garamond;
+    height: 400px;
+    width: 600px;
+}
+
+#timer {
+    font-size: 100px;
+    text-align: center;
+    color:aliceblue;
+}
+
+
+#credits{
+    background:none;
+    margin-top:30px;
+    font-size:20px;
+    color:white;
+    float:left;
+}
+
+#setting{
+    float:right;
+    background:none;
+    width:100px;
+    height:100px;
+}
+
+#setting-img{
+    width:40px;
+    height:40px;
+}

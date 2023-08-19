@@ -3,22 +3,32 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title></title>
+    <link rel="stylesheet" href="index.css">
+
 </head>
 <body>
-    <div id="timer"></div>
-    <div id="state"></div>
-    <div id="buttons">
+    <div id="box">
+        <h1 id="Title">POMODORO TIMER</h1>
+        <div id="timer">00:02</div>
+        <h2 id="state">Break time</h2>
 
-        <div id="play"></div>
-        <div id="skip"></div>
 
-    </div>
-    <div id="footer">
+        <div id="upper buttons">
 
-        <div id="credits"></div>
-        <div id="setting"></div>
+            <button id="play">▶</button>
+            <button id="skip">▶▶</button>
 
+        </div>
+        <div id="lower buttons">
+
+            <button id="credits">Show credits</button>
+
+            <button id="setting"><img id="setting-img"src="setting.png" /></button>
+
+        </div>
+        <script src="inex.js"></script>
     </div>
 </body>
 </html>
