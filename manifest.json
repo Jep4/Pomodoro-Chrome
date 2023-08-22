@@ -4,20 +4,27 @@
   "version": "0.1",
   "manifest_version": 3,
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "src/background.js"
   },
-  "permissions": [ "storage", "Notifications"],
+  "icons": {
+    "48": "/src/time-48.png",
+    "128": "/src/time-128.png"
+  },
+  "permissions": [ "storage", "notifications" ],
 
   "action": {
     "default_popup": "src/index.html",
-    "defult_icon":  ["src/time-16.png"]
+    "default_icon": {
+      "48": "/src/time-48.png",
+      "128": "/src/time-128.png"
+    }
   },
 
   "content_scripts": [
     {
       "matches": [ "<all_urls>" ],
       "html": [
-        "index.html", 
+        "index.html",
         "scheduler.html"
       ],
       "js": [ "src/index.js", "src/scheduler.js" ],

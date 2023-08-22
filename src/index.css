@@ -14,6 +14,16 @@ h2 {
     font-size: 28px;
 }
 
+a {
+    cursor: pointer;
+    border: none;
+    color:aliceblue;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    display:none;
+}
+
 button {
 	cursor: pointer;
     background-color: aliceblue; /* Green */
@@ -70,3 +80,4 @@ button {
     width:40px;
     height:40px;
 }
+

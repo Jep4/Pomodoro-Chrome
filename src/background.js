@@ -1,39 +1,51 @@
-ï»¿
+
 
 const setting = document.getElementById("setting");
-const starts = document.getElementById("play");
+const start = document.getElementById("play");
 const skip = document.getElementById("skip");
-var timers = document.getElementById("timer");
+var timer = document.getElementById("timer");
 const state = document.getElementById("state");
 
 var countDown = 2;
 var intervalID = setInterval(updateNum, 60 * 1000);
-timers.innerText = time2text(countDown);
+timer.innerText = time2text(countDown);
 
+//Bring data
+chrome.storage.sync.get('allData', function (data) {
+    if (data.allData) {
+        const timeBlockList = data.allData.time_block;
+        console.log(timeBlockList);
+
+        const timeData = data.allData.time;
+        console.log(timeData);
+    }
+    else {
+        console.log("No data found");
+    }
+});
 
 setting.addEventListener("click", () => {
     location.href = "scheduler.html";
 })
 
-starts.addEventListener("click", () => {
-    if (starts.innerHTML.length < 2) {
-        starts.innerHTML = "||";
-        chrome.runtime.sendMessage('', {
-            type: 'startsCountdown',
-            count: 2, 
-        });
+start.addEventListener("click", () => {
+    if (start.innerHTML.length < 2) {
+
+        start.innerHTML = "||";
+        intervalID = setInterval(updateNum, 1000);
     }
     else {
-        starts.innerHTML = "â–¶";
+        start.innerHTML = "¢º";
+        clearInterval(intervalID);
     }
-});
+})
 
 
 skip.addEventListener("click", () => {
 
     showNot();
     countDown = 0;
-    timers.innerText = time2text(countDown);
+    timer.innerText = time2text(countDown);
 })
 
 
@@ -48,13 +60,13 @@ function time2text(time) {
 
 function updateNum() {
     countDown--;
-    timers.innerText = time2text(countDown);
+    timer.innerText = time2text(countDown);
 
     if (countDown <= 0) {
 
         showNot();
         clearInterval(intervalID);
-        timers.innerText = "AWESOME!";
+        timer.innerText = "AWESOME!";
         state.innerText = "You finished all sessions!";
     }
 }
