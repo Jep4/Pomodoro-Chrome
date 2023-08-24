@@ -77,4 +77,17 @@ function showNot() {
     chrome.runtime.sendMessage('', {
         type: 'notification',
     });
+
+    var beepsound = new Audio(
+        'https://www.soundjay.com/button/sounds/beep-01a.mp3');
+    beepsound.play();
+
+    chrome.windows.create({
+        url: chrome.runtime.getURL("index.html"),
+        type: "popup",
+        top: data.top,
+        left: data.left - 400,
+        width: 400,
+        height: 600,
+    });
 }
