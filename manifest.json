@@ -4,7 +4,7 @@
   "version": "0.1",
   "manifest_version": 3,
   "background": {
-    "service_worker": "src/background.js"
+    "service_worker": "/src/background.js"
   },
   "icons": {
     "48": "/src/time-48.png",
