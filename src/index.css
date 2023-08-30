@@ -1,6 +1,6 @@
 ﻿
 /* TITLE */
-h1 {
+#title {
     padding-top: 15px;
     text-align: center;
     color: aliceblue;
@@ -8,13 +8,13 @@ h1 {
 }
 
 /* Break time */
-h2 {
+#state {
     text-align: center;
     color: #bbbbbb;
     font-size: 28px;
 }
 
-a {
+.link {
     cursor: pointer;
     border: none;
     color:aliceblue;
@@ -24,7 +24,7 @@ a {
     display:none;
 }
 
-button {
+.buttons {
 	cursor: pointer;
     background-color: aliceblue; /* Green */
     border: none;

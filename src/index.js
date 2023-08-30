@@ -6,40 +6,79 @@ const skip = document.getElementById("skip");
 var timers = document.getElementById("timer");
 const state = document.getElementById("state");
 var intervalID;
+var leftTime;
 
 
-var countDown = 2;
-timers.innerText = time2text(countDown);
+var time_block;
+var focus_time;
+var full_time;
 
-//Go to the setting
 
-setting.addEventListener("click", () => {
-    location.href = "scheduler.html";
-})
+var endSound = new Audio(chrome.runtime.getURL("src/end.mp3"));
 
-//Start the timer
 
-starts.addEventListener("click", () => {
-    if (starts.innerHTML.length < 2) {
-        starts.innerHTML = "||";
-        chrome.runtime.sendMessage('', {
-            type: 'startsCountdown',
-            count: 2, 
+chrome.runtime.sendMessage('bringData', (res) => {
+    full_time = res.full_time;
+    focus_time = res.focus_time;
+    time_block = res.time_block;
+
+
+    var countDown = time_block[0].length*60;
+    timers.textContent = time2text(countDown);
+
+    //Start the timer
+    starts.addEventListener("click", () => {
+        if (starts.innerHTML.length < 2) {
+            starts.innerHTML = "||";
+
+            chrome.runtime.sendMessage('startTimer', (res) => {
+                var startTime = Number(res);
+                timers.textContent = time2text(startTime);
+
+                intervalID = setInterval(getTime, 1000);
+
+            });
+
+        }
+        else {
+            starts.innerHTML = "▶";
+        }
+    });
+
+    function getTime() {
+        chrome.runtime.sendMessage('getTime', (res) => {
+            leftTime = Number(res);
+            timers.textContent = time2text(leftTime);
         });
+
+
+        if (leftTime <= 1) {
+            clearInterval(intervalID);
+
+            chrome.runtime.sendMessage('endTime', (res) => {
+                endSound.play();
+            });
+        }
+
     }
-    else {
-        starts.innerHTML = "▶";
-    }
+
+    //Go to the setting
+    setting.addEventListener("click", () => {
+        location.href = "scheduler.html";
+    })
+
+
+    //Skip 
+
+    skip.addEventListener("click", () => {
+
+        showNot();
+        countDown = 0;
+        timers.innerText = time2text(countDown);
+    })
+
 });
 
-//Skip 
-
-skip.addEventListener("click", () => {
-
-    showNot();
-    countDown = 0;
-    timers.innerText = time2text(countDown);
-})
 
 
 //Util functions
@@ -62,17 +101,6 @@ function updateNum() {
     }
 }
 
-chrome.runtime.sendMessage({ cmd: 'GET_TIME' }, response => {
-    if (response.time) {
-        const time = new Date(response.time);
-    }
-})
-
-function startTime(time) {
-    chrome.runtime.sendMessage({ cmd: 'START_TIMER', when: time });
-    startTimer(time);
-}
-
-function startTimer(time) {
-   intervalID= setInterval(updateNum, 1000);
+function startTimer() {
+    intervalID = setInterval(updateNum, 1000);
 }
