@@ -4,7 +4,7 @@ const setting = document.getElementById("setting");
 const starts = document.getElementById("play");
 const skip = document.getElementById("skip");
 var timers = document.getElementById("timer");
-const state = document.getElementById("state");
+var state = document.getElementById("state");
 var intervalID;
 var leftTime;
 
@@ -13,6 +13,8 @@ var focus_time;
 var full_time;
 var block_exists = true;
 var countDown;
+
+var ifSound = true;
 
 var endSound = new Audio(chrome.runtime.getURL("src/end.mp3"));
 
@@ -38,8 +40,23 @@ chrome.runtime.sendMessage('bringData', (res) => {
             starts.innerHTML = "||";
 
             chrome.runtime.sendMessage('startTimer', (res) => {
-                var startTime = Number(res);
+                var startTime = Number(res.times);
                 timers.textContent = time2text(startTime);
+                if (res.type === "focus") {
+                    state.textContent = "Session " + res.order+ ": Focus time";
+                }
+                else if (res.type === "break") {
+                    state.textContent = "Session " + res.order + ": Break time";
+                }
+                else if (res.type === "end") {
+                    endSession();
+                    chrome.runtime.sendMessage('endAll', (res) => {
+                        leftTime = Number(res);
+                    });
+                }
+                else {
+                    state.textContent = "Session " + res.order + ": Long break";
+                }
 
                 intervalID = setInterval(getTime, 1000);
 
@@ -53,7 +70,7 @@ chrome.runtime.sendMessage('bringData', (res) => {
 
     function getTime() {
         chrome.runtime.sendMessage('getTime', (res) => {
-            leftTime = Number(res);
+            leftTime = Number(res.times);
             timers.textContent = time2text(leftTime);
             console.log(res);
         });
@@ -63,7 +80,8 @@ chrome.runtime.sendMessage('bringData', (res) => {
             clearInterval(intervalID);
 
             chrome.runtime.sendMessage('endTime', (res) => {
-                endSound.play();
+                console.log("Time ends" + res);
+                if (ifSound) { endSound.play(); }
             });
         }
 
@@ -100,6 +118,23 @@ chrome.runtime.sendMessage('bringData', (res) => {
         else {
             starts.innerHTML = "▶";
         }
+
+        if (res.type === "focus") {
+            state.textContent ="Focus time";
+        }
+        else if (res.type === "break") {
+            state.textContent = "Break time";
+        }
+        else if (res.type === "end") {
+            endSession();
+            chrome.runtime.sendMessage('endAll', (res) => {
+                leftTime = Number(res);
+            });
+        }
+        else {
+            state.textContent ="Long break";
+        }
+
     })
 
 });
@@ -128,4 +163,9 @@ function updateNum() {
 
 function startTimer() {
     intervalID = setInterval(updateNum, 1000);
+}
+
+function endSession() {
+    timers.textContent = "AWESOME!";
+    state.textContent = "You finished all the sessions!"
 }

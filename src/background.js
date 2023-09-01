@@ -8,9 +8,9 @@ class Block {
 }
 
 class toReturn {
-    constructor(order, time, type) {
+    constructor(order, times, type) {
         this.order = order;
-        this.time = time;
+        this.times = times;
         this.type = type;
     }
 }
@@ -22,34 +22,42 @@ let blockL = new Block("long", 20);
 var times;
 var intervalID;
 var currentB = 0;
+var currentType;
+
+var order = 0;
 initialize_time();
 
 chrome.runtime.onMessage.addListener((message, sender, res) => {
 
     if (message === 'startTimer') {
-        ret = new toReturn(0, 0, "NULL");
             chrome.storage.sync.get(null, function (data) {
                 intervalID = setInterval(function () {
                     times--;
 
                     if (times <= 0) {
                         currentB++;
+                        console.log(data.time_block.length);
+                        console.log(currentB);
                         if (currentB < data.time_block.length) {
                             times = data.time_block[currentB].lengths * 60;
+                            currentType = data.time_block[currentB].type;
                         }
                         else {
-                            console.log("end of the session");
+                            currentType = "end";
+                            clearInterval(intervalID);
                         }
                     }
                 }, 1000);
+                ret = new toReturn(currentB+1, times, currentType);
 
-
-                res(times);
+                res(ret);
 
             });
     }
     else if (message === 'getTime') {
-        res(times);
+        ret = new toReturn(currentB+1, times, currentType);
+
+        res(ret);
     }
 
     else if (message === 'skipTime') {
@@ -82,6 +90,13 @@ chrome.runtime.onMessage.addListener((message, sender, res) => {
             console.log("data set");
         });
     }
+    else if (message === 'endAll') {
+        currentB = 0;
+        initialize_time();
+        ret = new toReturn(currentB + 1, times, currentType);
+
+        res(ret);
+    }
     return true;
 });
 
@@ -100,6 +115,7 @@ function initialize_time() {
 
         if (data.time_block != undefined) {
             times = data.time_block[0].lengths * 60;
+            currentType = data.time_block[0].type;
 
         }
 

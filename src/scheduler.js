@@ -11,7 +11,11 @@ const focusB = document.getElementById("focus");
 const breakB = document.getElementById("break");
 const longBB = document.getElementById("long-break");
 var total = document.getElementById("total");
-var totalstudy = document.getElementById("totalStudy")
+var totalstudy = document.getElementById("totalStudy");
+var ifSound = true;
+
+var soundON = document.getElementById("soundON");
+var soundOFF = document.getElementById("soundOFF");
 
 //Delete
 const deleteB = document.getElementById("delete");
@@ -145,6 +149,35 @@ chrome.runtime.sendMessage('bringData', (res) => {
 
 });
 
+soundON.addEventListener("click", () => {
+    if (!ifSound) {
+        soundON.style.background = "aliceblue";
+        soundON.style.color = "black";
+        soundOFF.style.background = "black";
+        soundOFF.style.color = "aliceblue";
+        ifSound = true;
+        chrome.runtime.sendMessage({ message: 'changeSound', ifSound: true }, (res) => {
+            console.log("turn on sound");
+        });
+    }
+
+});
+soundOFF.addEventListener("click", () => {
+    if (ifSound) {
+        soundOFF.style.background = "aliceblue";
+        soundOFF.style.color = "black";
+        soundON.style.background = "black";
+        soundON.style.color = "aliceblue";
+        ifSound = false;
+
+        chrome.runtime.sendMessage({ message: 'changeSound', ifSound: false }, (res) => {
+            console.log("turn off sound");
+        });
+    }
+
+});
+
+
 
 
 function createBlock(type) {
@@ -172,4 +205,3 @@ function time2text(time) {
     var string = hour + " hours " + min + " minutes";
     return string;
 }
-
