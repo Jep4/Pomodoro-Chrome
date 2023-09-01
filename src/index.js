@@ -8,11 +8,11 @@ const state = document.getElementById("state");
 var intervalID;
 var leftTime;
 
-
 var time_block;
 var focus_time;
 var full_time;
-
+var block_exists = true;
+var countDown;
 
 var endSound = new Audio(chrome.runtime.getURL("src/end.mp3"));
 
@@ -22,8 +22,14 @@ chrome.runtime.sendMessage('bringData', (res) => {
     focus_time = res.focus_time;
     time_block = res.time_block;
 
-
-    var countDown = time_block[0].length*60;
+    if (time_block[0] != undefined) {
+        countDown = time_block[0].lengths * 60;
+        
+    }
+    else {
+        block_exists = false;
+        countDown = 0;
+    }
     timers.textContent = time2text(countDown);
 
     //Start the timer
@@ -49,6 +55,7 @@ chrome.runtime.sendMessage('bringData', (res) => {
         chrome.runtime.sendMessage('getTime', (res) => {
             leftTime = Number(res);
             timers.textContent = time2text(leftTime);
+            console.log(res);
         });
 
 
@@ -72,9 +79,27 @@ chrome.runtime.sendMessage('bringData', (res) => {
 
     skip.addEventListener("click", () => {
 
-        showNot();
-        countDown = 0;
-        timers.innerText = time2text(countDown);
+        chrome.runtime.sendMessage('skipTime', (res) => {
+            leftTime = Number(res);
+        });
+        timers.innerText = time2text(leftTime);
+
+
+        if (starts.innerHTML.length < 2) {
+            starts.innerHTML = "||";
+
+            chrome.runtime.sendMessage('startTimer', (res) => {
+                var startTime = Number(res);
+                timers.textContent = time2text(startTime);
+
+                intervalID = setInterval(getTime, 1000);
+
+            });
+
+        }
+        else {
+            starts.innerHTML = "▶";
+        }
     })
 
 });

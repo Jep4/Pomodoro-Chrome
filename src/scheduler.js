@@ -1,8 +1,8 @@
 
 class Block {
-    constructor(type, length) {
+    constructor(type, lengths) {
         this.type = type;
-        this.length = length;
+        this.lengths = lengths;
     }
 }
 //time block
@@ -24,14 +24,14 @@ let blockF = new Block("focus", 25);
 let blockB = new Block("break", 5);
 let blockL = new Block("long", 20);
 
+var time_block;
+var focus_time;
+var full_time;
+
 
 //Bring time block data from chrome local storage
 
 chrome.runtime.sendMessage('bringData', (res) => {
-    var time_block;
-    var focus_time;
-    var full_time;
-
     full_time = res.full_time;
     focus_time = res.focus_time;
     time_block = res.time_block;
@@ -56,7 +56,7 @@ chrome.runtime.sendMessage('bringData', (res) => {
         })
 
         const focusData = document.getElementById("focus-input").value;
-        blockF = { type: "focus", length: focusData };
+        blockF = { type: "focus", lengths: focusData };
         if (time_block.length <= 16) {
 
             full_time += Number(focusData);
@@ -76,7 +76,7 @@ chrome.runtime.sendMessage('bringData', (res) => {
 
     breakB.addEventListener("click", () => {
         const breakData = document.getElementById("break-input").value;
-        blockB = { type: "break", length: breakData };
+        blockB = { type: "break", lengths: breakData };
         if (time_block.length <= 16) {
 
             full_time += Number(breakData);
@@ -91,7 +91,7 @@ chrome.runtime.sendMessage('bringData', (res) => {
 
     longBB.addEventListener("click", () => {
         const longBData = document.getElementById("long-input").value;
-        blockL = { type: "long", length: longBData };
+        blockL = { type: "long", lengths: longBData };
         if (time_block.length <= 16) {
 
             full_time += Number(longBData);
@@ -106,7 +106,7 @@ chrome.runtime.sendMessage('bringData', (res) => {
 
     deleteB.addEventListener("click", () => {
         if (time_block.length > 0) {
-            time_data = time_block[time_block.length - 1].length;
+            time_data = time_block[time_block.length - 1].lengths;
             if (time_block[time_block.length - 1].type == "focus") {
                 focus_time -= Number(time_data);
             }

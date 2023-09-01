@@ -1,9 +1,17 @@
 
 
 class Block {
-    constructor(type, length) {
+    constructor(type, lengths) {
         this.type = type;
-        this.length = length;
+        this.lengths = lengths;
+    }
+}
+
+class toReturn {
+    constructor(order, time, type) {
+        this.order = order;
+        this.time = time;
+        this.type = type;
     }
 }
 
@@ -12,29 +20,40 @@ let blockB = new Block("break", 5);
 let blockL = new Block("long", 20);
 
 var times;
-
-chrome.storage.sync.get(null, function (data) {
-    if (data.time_block != undefined) {
-        times = data.time_block[0].length*60;
-    }
-
-    else {
-        times = 25 * 60;
-    }
-});
-
 var intervalID;
+var currentB = 0;
+initialize_time();
 
 chrome.runtime.onMessage.addListener((message, sender, res) => {
 
     if (message === 'startTimer') {
-        intervalID = setInterval(function () {
-            times--;
-        }, 1000);
+        ret = new toReturn(0, 0, "NULL");
+            chrome.storage.sync.get(null, function (data) {
+                intervalID = setInterval(function () {
+                    times--;
 
-        res(times);
+                    if (times <= 0) {
+                        currentB++;
+                        if (currentB < data.time_block.length) {
+                            times = data.time_block[currentB].lengths * 60;
+                        }
+                        else {
+                            console.log("end of the session");
+                        }
+                    }
+                }, 1000);
+
+
+                res(times);
+
+            });
     }
     else if (message === 'getTime') {
+        res(times);
+    }
+
+    else if (message === 'skipTime') {
+        times = 1;
         res(times);
     }
     else if (message === "endTime") {
@@ -46,7 +65,6 @@ chrome.runtime.onMessage.addListener((message, sender, res) => {
     }
     else if (message === 'bringData') {
         chrome.storage.sync.get(null, function (data) {
-            console.log("data is", data.type);
             if (data.time_block != undefined) {
                 console.log("imported full time");
                 res(data);
@@ -76,3 +94,18 @@ function showNot() {
     });
 }
 
+function initialize_time() {
+
+    chrome.storage.sync.get(null, function (data) {
+
+        if (data.time_block != undefined) {
+            times = data.time_block[0].lengths * 60;
+
+        }
+
+        else {
+            times = 25 * 60;
+        }
+    });
+    return true;
+}

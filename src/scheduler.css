@@ -1,11 +1,10 @@
-﻿* {
-}
+﻿
 
 header{
     padding-bottom:20px;
 }
 
-button {
+.btn {
     cursor: pointer;
     text-align: center;
     border: solid;
@@ -18,7 +17,7 @@ button {
     padding: 5px;
 }
 
-input{
+.inputBox{
     width:100px;
 }
 
@@ -29,6 +28,10 @@ input{
     width: 600px;
 }
 
+#soundON{
+    background: aliceblue;
+    color:black;
+}
 #bar{
     margin-left:20px;
     width:550px;
