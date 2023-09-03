@@ -14,8 +14,6 @@ var full_time;
 var block_exists = true;
 var countDown;
 
-var ifSound = true;
-
 var endSound = new Audio(chrome.runtime.getURL("src/end.mp3"));
 
 
@@ -25,7 +23,7 @@ chrome.runtime.sendMessage('bringData', (res) => {
     time_block = res.time_block;
 
     if (time_block[0] != undefined) {
-        countDown = time_block[0].lengths * 60;
+        getTime();
         
     }
     else {
@@ -34,38 +32,14 @@ chrome.runtime.sendMessage('bringData', (res) => {
     }
     timers.textContent = time2text(countDown);
 
+    console.log(res.started);
+    if (res.started===true) {
+        startTimer();
+    }
+
     //Start the timer
     starts.addEventListener("click", () => {
-        if (starts.innerHTML.length < 2) {
-            starts.innerHTML = "||";
-
-            chrome.runtime.sendMessage('startTimer', (res) => {
-                var startTime = Number(res.times);
-                timers.textContent = time2text(startTime);
-                if (res.type === "focus") {
-                    state.textContent = "Session " + res.order+ ": Focus time";
-                }
-                else if (res.type === "break") {
-                    state.textContent = "Session " + res.order + ": Break time";
-                }
-                else if (res.type === "end") {
-                    endSession();
-                    chrome.runtime.sendMessage('endAll', (res) => {
-                        leftTime = Number(res);
-                    });
-                }
-                else {
-                    state.textContent = "Session " + res.order + ": Long break";
-                }
-
-                intervalID = setInterval(getTime, 1000);
-
-            });
-
-        }
-        else {
-            starts.innerHTML = "▶";
-        }
+        startTimer();
     });
 
     function getTime() {
@@ -81,11 +55,55 @@ chrome.runtime.sendMessage('bringData', (res) => {
 
             chrome.runtime.sendMessage('endTime', (res) => {
                 console.log("Time ends" + res);
-                if (ifSound) { endSound.play(); }
+                chrome.storage.sync.get(null, function (data) {
+                    if (data.sound==="true") {
+                        endSound.play();
+                    }
+                });
             });
         }
 
     }
+
+
+
+    function startTimer() {
+
+        chrome.runtime.sendMessage('startTimer', (res) => {
+
+            if (starts.innerHTML.length < 2) {
+                starts.innerHTML = "||";
+
+                var startTime = Number(res.times);
+                timers.textContent = time2text(startTime);
+                if (res.type === "focus") {
+                    state.textContent = "Session " + res.order + ": Focus time";
+                }
+                else if (res.type === "break") {
+                    state.textContent = "Session " + res.order + ": Break time";
+                }
+                else if (res.type === "end") {
+                    endSession();
+                    chrome.runtime.sendMessage('endAll', (res) => {
+                        leftTime = Number(res);
+                    });
+                }
+                else {
+                    state.textContent = "Session " + res.order + ": Long break";
+                }
+
+                intervalID = setInterval(getTime, 1000);
+            }
+
+            else {
+                starts.innerHTML = "▶";
+                chrome.runtime.sendMessage('pauseTime', (res) => { getTime(); })
+            }
+
+        });
+
+    }
+
 
     //Go to the setting
     setting.addEventListener("click", () => {
@@ -161,9 +179,6 @@ function updateNum() {
     }
 }
 
-function startTimer() {
-    intervalID = setInterval(updateNum, 1000);
-}
 
 function endSession() {
     timers.textContent = "AWESOME!";

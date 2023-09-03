@@ -12,7 +12,6 @@ const breakB = document.getElementById("break");
 const longBB = document.getElementById("long-break");
 var total = document.getElementById("total");
 var totalstudy = document.getElementById("totalStudy");
-var ifSound = true;
 
 var soundON = document.getElementById("soundON");
 var soundOFF = document.getElementById("soundOFF");
@@ -132,7 +131,7 @@ chrome.runtime.sendMessage('bringData', (res) => {
 
 
     start.addEventListener("click", () => {
-        const storageData = {'type':"setData", 'full_time': full_time, 'focus_time': focus_time, 'time_block': time_block };
+        const storageData = { 'type': "setData", 'full_time': full_time, 'focus_time': focus_time, 'time_block': time_block };
 
         chrome.runtime.sendMessage(storageData, (res) => {
 
@@ -149,33 +148,60 @@ chrome.runtime.sendMessage('bringData', (res) => {
 
 });
 
-soundON.addEventListener("click", () => {
-    if (!ifSound) {
+var ifSound;
+ifSound = chrome.storage.sync.get(null, function (data) {
+    ifSound = data.sound;
+
+    if (ifSound === "true") {
         soundON.style.background = "aliceblue";
         soundON.style.color = "black";
         soundOFF.style.background = "black";
         soundOFF.style.color = "aliceblue";
-        ifSound = true;
-        chrome.runtime.sendMessage({ message: 'changeSound', ifSound: true }, (res) => {
-            console.log("turn on sound");
-        });
     }
 
-});
-soundOFF.addEventListener("click", () => {
-    if (ifSound) {
+    else if (ifSound === "false") {
         soundOFF.style.background = "aliceblue";
         soundOFF.style.color = "black";
         soundON.style.background = "black";
         soundON.style.color = "aliceblue";
-        ifSound = false;
-
-        chrome.runtime.sendMessage({ message: 'changeSound', ifSound: false }, (res) => {
-            console.log("turn off sound");
-        });
     }
 
-});
+
+    soundON.addEventListener("click", () => {
+        if (ifSound === "false") {
+            soundON.style.background = "aliceblue";
+            soundON.style.color = "black";
+            soundOFF.style.background = "black";
+            soundOFF.style.color = "aliceblue";
+            chrome.runtime.sendMessage('soundON', (res) => {
+                console.log(res, " turn on sound");
+            });
+
+        }
+
+        ifSound = "true";
+    });
+    soundOFF.addEventListener("click", () => {
+        if (ifSound === "true") {
+            soundOFF.style.background = "aliceblue";
+            soundOFF.style.color = "black";
+            soundON.style.background = "black";
+            soundON.style.color = "aliceblue";
+
+            chrome.runtime.sendMessage('soundOFF', (res) => {
+                console.log(res, "turn off sound");
+            });
+
+        }
+
+        ifSound = "false";
+
+    });
+
+}
+
+
+);
 
 
 

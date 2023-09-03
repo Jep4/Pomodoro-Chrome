@@ -3,17 +3,25 @@
 
 2023-08-19 Todo
 - (index.js) get data from storage and save it to CountDown [DONE]
-- (index.js) change state according to the block type (data.type) 
+- (index.js) change state according to the block type (data.type)[DONE 230901]
 - (index.js) move notification code to background.js [DONE]
 - (index.js) add restart button
-- (scheduler.js) add blacklist & whitelist 
 
 - Add main icon [DONE]
 
 2023-08-29 Issue
-- (index.js) error when press start button with remained time 0:0
+- (index.js) error when press start button with remained time 0:0 [Resolved 230902]
 
 2023-08-29 Todo
-- (scheduler.js) sync timer with the schedule
-- (scheduler.js) make better notification / popup
-- (index.js) check if stop / resume function works properly
+- (scheduler.js) sync timer with the schedule [DONE 230901]
+- (scheduler.js) make better notification / popup [DONE 230902]
+- (index.js) check if stop / resume function works properly [DONE 230902]
+
+2023-09-02 Issue
+- shows NaN for 1s when pressing skip button
+- Does not show end popup immadiately (after press start button again)
+- Does not starts next session immadiately
+
+- Becoems minus number when sets length of time block to 0
+- Does not reflect the schedule block change
+- Keeps sending notification when delete the current / next block
