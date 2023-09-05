@@ -52,58 +52,73 @@ chrome.runtime.sendMessage('bringData', (res) => {
 
 
 
-    //Add time block
+    //Add time blocks
 
     focusB.addEventListener("click", () => {
         chrome.storage.sync.get('allData', function (data) {
         })
 
         const focusData = document.getElementById("focus-input").value;
-        blockF = { type: "focus", lengths: focusData };
-        if (time_block.length <= 16) {
-
-            full_time += Number(focusData);
-            focus_time += Number(focusData);
-
-            total.innerHTML = time2text(full_time);
-            totalstudy.innerHTML = "working " + time2text(focus_time);
-
-            time_block.push(blockF);
-            createBlock("focus");
-
+        if (focusData < 1) {
+            alert("You can't set time block less than 1 minutes!")
         }
         else {
-            alert("You can't add more time blocks!");
+            blockF = { type: "focus", lengths: focusData };
+            if (time_block.length <= 16) {
+
+                full_time += Number(focusData);
+                focus_time += Number(focusData);
+
+                total.innerHTML = time2text(full_time);
+                totalstudy.innerHTML = "working " + time2text(focus_time);
+
+                time_block.push(blockF);
+                createBlock("focus");
+
+            }
+            else {
+                alert("You can't add more time blocks!");
+            }
         }
     })
 
     breakB.addEventListener("click", () => {
         const breakData = document.getElementById("break-input").value;
-        blockB = { type: "break", lengths: breakData };
-        if (time_block.length <= 16) {
-
-            full_time += Number(breakData);
-            total.innerHTML = time2text(full_time);
-            time_block.push(blockB);
-            createBlock("break");
+        if (breakData < 1) {
+            alert("You can't set time block less than 1 minutes!")
         }
         else {
-            alert("You can't add more time blocks!");
+            blockB = { type: "break", lengths: breakData };
+            if (time_block.length <= 16) {
+
+                full_time += Number(breakData);
+                total.innerHTML = time2text(full_time);
+                time_block.push(blockB);
+                createBlock("break");
+            }
+            else {
+                alert("You can't add more time blocks!");
+            }
         }
     })
 
     longBB.addEventListener("click", () => {
         const longBData = document.getElementById("long-input").value;
-        blockL = { type: "long", lengths: longBData };
-        if (time_block.length <= 16) {
-
-            full_time += Number(longBData);
-            total.innerHTML = time2text(full_time);
-            time_block.push(blockL);
-            createBlock("long");
+        if (longBData < 1) {
+            alert("You can't set time block less than 1 minutes!")
         }
         else {
-            alert("You can't add more time blocks!");
+            blockL = { type: "long", lengths: longBData };
+            if (time_block.length <= 16) {
+
+                full_time += Number(longBData);
+                total.innerHTML = time2text(full_time);
+                time_block.push(blockL);
+                createBlock("long");
+            }
+            else {
+                alert("You can't add more time blocks!");
+            }
         }
     })
 

@@ -18,10 +18,17 @@
 - (index.js) check if stop / resume function works properly [DONE 230902]
 
 2023-09-02 Issue
-- shows NaN for 1s when pressing skip button
-- Does not show end popup immadiately (after press start button again)
-- Does not starts next session immadiately
+- shows NaN for 1s when pressing skip button [Resolved 230904]
 
-- Becoems minus number when sets length of time block to 0
+- Does not show end popup immadiately (after press start button again) [Resolved 230904]
+- Does not starts next session immadiately [Resolved 230904]
+
+- Becoems minus number when sets length of time block to 0 [Resolved 230904]
+
+
+2023-09-04 Issue
+- Does not change its state immadiately 
 - Does not reflect the schedule block change
 - Keeps sending notification when delete the current / next block
+	- Make the current or previous block unchangeable unless finished all the session
+	- Error handling for Delete button

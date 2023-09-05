@@ -22,9 +22,10 @@ chrome.runtime.sendMessage('bringData', (res) => {
     focus_time = res.focus_time;
     time_block = res.time_block;
 
+    //Initialize timer
     if (time_block[0] != undefined) {
         getTime();
-        
+
     }
     else {
         block_exists = false;
@@ -32,8 +33,8 @@ chrome.runtime.sendMessage('bringData', (res) => {
     }
     timers.textContent = time2text(countDown);
 
-    console.log(res.started);
-    if (res.started===true) {
+    //Automatically starts the timer even if restarted 
+    if (res.started === true) {
         startTimer();
     }
 
@@ -41,6 +42,29 @@ chrome.runtime.sendMessage('bringData', (res) => {
     starts.addEventListener("click", () => {
         startTimer();
     });
+
+
+    //Go to the setting
+    setting.addEventListener("click", () => {
+        location.href = "scheduler.html";
+    })
+
+
+    //Skip 
+
+    skip.addEventListener("click", () => {
+
+        //Consider to make a function (duplicated)
+
+        chrome.runtime.sendMessage('skipTime', (res) => {
+
+            startTimer();
+        });
+
+
+
+    })
+
 
     function getTime() {
         chrome.runtime.sendMessage('getTime', (res) => {
@@ -50,13 +74,16 @@ chrome.runtime.sendMessage('bringData', (res) => {
         });
 
 
-        if (leftTime <= 1) {
+        if (leftTime <= 0) {
             clearInterval(intervalID);
 
             chrome.runtime.sendMessage('endTime', (res) => {
                 console.log("Time ends" + res);
+                    clearInterval(intervalID);
+                    timers.innerText = "AWESOME!";
+                    state.innerText = "You finished all sessions!";
                 chrome.storage.sync.get(null, function (data) {
-                    if (data.sound==="true") {
+                    if (data.sound === "true") {
                         endSound.play();
                     }
                 });
@@ -66,6 +93,22 @@ chrome.runtime.sendMessage('bringData', (res) => {
     }
 
 
+    function changeState(res) {
+        if (res.type === "focus") {
+            state.textContent = "Focus time";
+        }
+        else if (res.type === "break") {
+            state.textContent = "Break time";
+        }
+        else if (res.type === "end") {
+            chrome.runtime.sendMessage('endAll', (res) => {
+                leftTime = Number(res);
+            });
+        }
+        else {
+            state.textContent = "Long break";
+        }
+    }
 
     function startTimer() {
 
@@ -76,21 +119,7 @@ chrome.runtime.sendMessage('bringData', (res) => {
 
                 var startTime = Number(res.times);
                 timers.textContent = time2text(startTime);
-                if (res.type === "focus") {
-                    state.textContent = "Session " + res.order + ": Focus time";
-                }
-                else if (res.type === "break") {
-                    state.textContent = "Session " + res.order + ": Break time";
-                }
-                else if (res.type === "end") {
-                    endSession();
-                    chrome.runtime.sendMessage('endAll', (res) => {
-                        leftTime = Number(res);
-                    });
-                }
-                else {
-                    state.textContent = "Session " + res.order + ": Long break";
-                }
+                changeState(res);
 
                 intervalID = setInterval(getTime, 1000);
             }
@@ -104,57 +133,6 @@ chrome.runtime.sendMessage('bringData', (res) => {
 
     }
 
-
-    //Go to the setting
-    setting.addEventListener("click", () => {
-        location.href = "scheduler.html";
-    })
-
-
-    //Skip 
-
-    skip.addEventListener("click", () => {
-
-        chrome.runtime.sendMessage('skipTime', (res) => {
-            leftTime = Number(res);
-        });
-        timers.innerText = time2text(leftTime);
-
-
-        if (starts.innerHTML.length < 2) {
-            starts.innerHTML = "||";
-
-            chrome.runtime.sendMessage('startTimer', (res) => {
-                var startTime = Number(res);
-                timers.textContent = time2text(startTime);
-
-                intervalID = setInterval(getTime, 1000);
-
-            });
-
-        }
-        else {
-            starts.innerHTML = "▶";
-        }
-
-        if (res.type === "focus") {
-            state.textContent ="Focus time";
-        }
-        else if (res.type === "break") {
-            state.textContent = "Break time";
-        }
-        else if (res.type === "end") {
-            endSession();
-            chrome.runtime.sendMessage('endAll', (res) => {
-                leftTime = Number(res);
-            });
-        }
-        else {
-            state.textContent ="Long break";
-        }
-
-    })
-
 });
 
 
@@ -166,21 +144,4 @@ function time2text(time) {
     var sec = time - min * 60;
     var string = min + " : " + sec;
     return string;
-}
-
-function updateNum() {
-    countDown--;
-    timers.innerText = time2text(countDown);
-
-    if (countDown <= 0) {
-        clearInterval(intervalID);
-        timers.innerText = "AWESOME!";
-        state.innerText = "You finished all sessions!";
-    }
-}
-
-
-function endSession() {
-    timers.textContent = "AWESOME!";
-    state.textContent = "You finished all the sessions!"
 }

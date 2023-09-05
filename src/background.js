@@ -35,30 +35,37 @@ chrome.runtime.onMessage.addListener((message, sender, res) => {
         if (intervalID) {
             clearInterval(intervalID);
         }
-            chrome.storage.sync.get(null, function (data) {
-                intervalID = setInterval(function () {
+        chrome.storage.sync.get(null, function (data) {
+            intervalID = setInterval(
+                function () {
                     times--;
 
                     if (times <= 0) {
                         currentB++;
-                        if (currentB < data.time_block.length) {
-                            times = data.time_block[currentB].lengths * 60;
-                            currentType = data.time_block[currentB].type;
+                        if (data.time_block.length) {
+                            if (currentB < data.time_block.length) {
+                                times = data.time_block[currentB].lengths * 60;
+                                currentType = data.time_block[currentB].type;
+                            }
+
+                            else {
+                                currentType = "end";
+                                clearInterval(intervalID);
+                            }
                         }
                         else {
-                            currentType = "end";
                             clearInterval(intervalID);
                         }
                     }
                 }, 1000);
-                ret = new toReturn(currentB+1, times, currentType);
+            ret = new toReturn(currentB + 1, times, currentType);
 
-                res(ret);
+            res(ret);
 
-            });
+        });
     }
     else if (message === 'getTime') {
-        ret = new toReturn(currentB+1, times, currentType);
+        ret = new toReturn(currentB + 1, times, currentType);
 
         res(ret);
     }
@@ -71,12 +78,12 @@ chrome.runtime.onMessage.addListener((message, sender, res) => {
         res(ret);
     }
     else if (message === 'skipTime') {
-        times = 1;
+        times = 0;
         res(times);
     }
     else if (message === "endTime") {
         clearInterval(intervalID);
-        show_notification() 
+        show_notification()
 
         res("good");
     }
@@ -91,7 +98,7 @@ chrome.runtime.onMessage.addListener((message, sender, res) => {
 
             else {
                 console.log("intialized times");
-                res({ full_time: 105, focus_time: 75, time_block: [blockF, blockB, blockF, blockB, blockF, blockL], started: started});
+                res({ full_time: 105, focus_time: 75, time_block: [blockF, blockB, blockF, blockB, blockF, blockL], started: started });
             }
         });
     }
