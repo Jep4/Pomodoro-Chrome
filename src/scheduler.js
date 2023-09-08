@@ -124,19 +124,25 @@ chrome.runtime.sendMessage('bringData', (res) => {
 
     deleteB.addEventListener("click", () => {
         if (time_block.length > 0) {
-            time_data = time_block[time_block.length - 1].lengths;
-            if (time_block[time_block.length - 1].type == "focus") {
-                focus_time -= Number(time_data);
+            if (time_block.length <= res.order) {
+
+                alert("You can't delete current block!");
             }
+            else {
+                time_data = time_block[time_block.length - 1].lengths;
+                if (time_block[time_block.length - 1].type == "focus") {
+                    focus_time -= Number(time_data);
+                }
 
-            time_block.pop(time_block[time_block.length]);
-            var bar = document.querySelectorAll(".session");
-            full_time -= Number(time_data);
+                time_block.pop(time_block[time_block.length]);
+                var bar = document.querySelectorAll(".session");
+                full_time -= Number(time_data);
 
-            totalstudy.innerHTML = "working " + time2text(focus_time);
+                totalstudy.innerHTML = "working " + time2text(focus_time);
 
-            total.innerHTML = time2text(full_time);
-            bar[bar.length - 1].remove();
+                total.innerHTML = time2text(full_time);
+                bar[bar.length - 1].remove();
+}
 
         }
         else {
